@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
 /* base styles */
 * {
@@ -72,7 +72,7 @@
   font-weight: bold;
 }
 
-.job-preview a{
+.job-preview a {
   text-decoration: none;
 }
 
@@ -109,7 +109,9 @@
   color: #f1356d;
   margin-bottom: 30px;
 }
-.create input, .create textarea, .create select {
+.create input,
+.create textarea,
+.create select {
   width: 100%;
   padding: 6px 10px;
   margin: 10px 0;
@@ -126,10 +128,35 @@
   cursor: pointer;
 }
 
-
 .job-preview button {
   margin: 5px; /* Adds space around the buttons */
   border: 1px solid #f1356d; /* Adds a black border */
   padding: 10px; /* Adds padding inside the buttons */
   border-radius: 5px; /* Optional: Adds rounded corners */
 }
+
+
+/* Style for the "Add Job" link */
+nav .links a {
+  color: #f1356d;
+  text-decoration: none;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* Style for the email span */
+nav .links span {
+  color: gray;
+  margin-right: 15px;
+  font-style: italic;
+}
+
+/* Style for the "Log out" button */
+nav .links button {
+  margin: 5px; /* Adds space around the buttons */
+  border: 1px solid #f1356d; /* Adds a black border */
+  padding: 10px; /* Adds padding inside the buttons */
+  border-radius: 5px; /* Optional: Adds rounded corners */
+  border-radius: 5px;
+} 
+
