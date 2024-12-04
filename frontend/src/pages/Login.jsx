@@ -2,7 +2,9 @@ import useField from "../hooks/useField";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = () => {
+  const { setIsAuthenticated } = useContext(AuthContext)
+
   const navigate = useNavigate();
   const email = useField("email");
   const password = useField("password");
