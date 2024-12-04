@@ -8,6 +8,12 @@ const AddJobPage = () => {
   const [companyName, setCompanyName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [website, setWebsite] = useState('');
+  const [location, setLocation] = useState('');
+  const [salary, setSalary] = useState('');
+  const [status, setStatus] = useState('open');
+  const [applicationDeadline, setApplicationDeadline] = useState('');
+  const [requirements, setRequirements] = useState('');
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user ? user.token : null;
@@ -46,7 +52,13 @@ const AddJobPage = () => {
         name: companyName,
         contactEmail,
         contactPhone,
+        website,
       },
+      location,
+      salary,
+      status,
+      applicationDeadline,
+      requirements: requirements.split(',').map(req => req.trim()),
     };
 
     const success = await addJob(newJob);
@@ -104,6 +116,10 @@ const AddJobPage = () => {
           value={contactPhone}
           onChange={(e) => setContactPhone(e.target.value)}
         />
+        <label>Company Website:</label>
+        <input type="url" value={website} onChange={(e) => setWebsite(e.target.value)}></input>
+        <label>Location</label>
+        <input type="text" value={location} onChange={ (e) => setLocation(e.target.value)}></input>
         <button type="submit">Add Job</button>
       </form>
     </div>
