@@ -1,30 +1,44 @@
-const mongoose = require("mongoose");
-const supertest = require("supertest");
-const app = require("../app"); // Your Express app
+import mongoose from "mongoose";
+import supertest from "supertest";
+import app from "../app.js";
 const api = supertest(app);
-const Job = require("../models/jobModel");
+import Job from "../models/jobModel.js";
 
 const jobs = [
   {
-    title: "Senior React Developer",
-    type: "Full-Time",
-    description: "We are seeking a talented Front-End Developer to join our team in Boston, MA.",
+    title:"Job title",
+    type:"Remote job",
+    description:"A very good job",
     company: {
-      name: "NewTek Solutions",
-      contactEmail: "contact@teksolutions.com",
-      contactPhone: "555-555-5555"
-    }
+      name:"Best company",
+      contactEmail:"email@email.com",
+      contactPhone:"12345",
+      website:"www.website.com"
+    },
+    location:"Street 11",
+    salary:5000,
+    postedDate:new Date(),
+    status:"open",
+    applicationDeadline:new Date(),
+    requirements:["Be a human", "Know what to do"]
   },
   {
-    title: "Junior Backend Developer",
-    type: "Part-Time",
-    description: "Join our backend team to help build scalable APIs.",
+    title:"Another job",
+    type:"Company job",
+    description:"Available for new graduates",
     company: {
-      name: "Tech Innovators",
-      contactEmail: "hr@techinnovators.com",
-      contactPhone: "555-555-1234"
-    }
-  },
+      name:"Company company",
+      contactEmail:"testing@email.com",
+      contactPhone:"12345",
+      website:"www.testsite.com"
+    },
+    location:"Street 11",
+    salary:2500,
+    postedDate:new Date(),
+    status:"open",
+    applicationDeadline:new Date(),
+    requirements:["Be a human", "Know what to do"]
+  }
 ];
 
 describe("Job Controller", () => {
@@ -49,27 +63,34 @@ describe("Job Controller", () => {
 
   // Test POST /api/jobs
   it("should create a new job when POST /api/jobs is called", async () => {
-    const newJob = {
-      title: "Mid-Level DevOps Engineer",
-      type: "Full-Time",
-      description: "We are looking for a DevOps Engineer to join our team.",
-      company: {
-        name: "Cloud Solutions",
-        contactEmail: "jobs@cloudsolutions.com",
-        contactPhone: "555-555-6789"
-      }
-    };
+    const newjob = {
+    title:"Another job",
+    type:"Company job",
+    description:"Available for new graduates",
+    company: {
+      name:"Company company",
+      contactEmail:"testing@email.com",
+      contactPhone:"12345",
+      website:"www.testsite.com"
+    },
+    location:"Street 11",
+    salary:2500,
+    postedDate:new Date(),
+    status:"open",
+    applicationDeadline:new Date(),
+    requirements:["Be a human", "Know what to do"]
+  }
 
     await api
       .post("/api/jobs")
-      .send(newJob)
+      .send(newjob)
       .expect(201)
       .expect("Content-Type", /application\/json/);
-
+    
     const jobsAfterPost = await Job.find({});
     expect(jobsAfterPost).toHaveLength(jobs.length + 1);
     const jobTitles = jobsAfterPost.map((job) => job.title);
-    expect(jobTitles).toContain(newJob.title);
+    expect(jobTitles).toContain(newjob.title);
   });
 
   // Test GET /api/jobs/:id
