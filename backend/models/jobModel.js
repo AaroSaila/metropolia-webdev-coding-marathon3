@@ -28,4 +28,4 @@ jobSchema.set('toJSON', {
     }
 });
 
-const Job = mongoose.model('Job', jobSchema);
+export default mongoose.model('Job', jobSchema);
