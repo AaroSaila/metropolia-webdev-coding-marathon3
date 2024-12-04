@@ -1,36 +1,83 @@
-const mongoose = require("mongoose");
-const supertest = require("supertest");
-const app = require("../app"); // Your Express app
+import mongoose from "mongoose";
+import supertest from "supertest";
+import app from "../app.js";
 const api = supertest(app);
-const Job = require("../models/jobModel");
+import Job from "../models/jobModel.js";
+import User from "../models/userModel.js";
 
 const jobs = [
   {
-    title: "Senior React Developer",
-    type: "Full-Time",
-    description: "We are seeking a talented Front-End Developer to join our team in Boston, MA.",
+    title:"Job title",
+    type:"Remote job",
+    description:"A very good job",
     company: {
-      name: "NewTek Solutions",
-      contactEmail: "contact@teksolutions.com",
-      contactPhone: "555-555-5555"
-    }
+      name:"Best company",
+      contactEmail:"email@email.com",
+      contactPhone:"12345",
+      website:"www.website.com"
+    },
+    location:"Street 11",
+    salary:5000,
+    postedDate:new Date(),
+    status:"open",
+    applicationDeadline:new Date(),
+    requirements:["Be a human", "Know what to do"]
   },
   {
-    title: "Junior Backend Developer",
-    type: "Part-Time",
-    description: "Join our backend team to help build scalable APIs.",
+    title:"Another job",
+    type:"Company job",
+    description:"Available for new graduates",
     company: {
-      name: "Tech Innovators",
-      contactEmail: "hr@techinnovators.com",
-      contactPhone: "555-555-1234"
-    }
-  },
+      name:"Company company",
+      contactEmail:"testing@email.com",
+      contactPhone:"12345",
+      website:"www.testsite.com"
+    },
+    location:"Street 11",
+    salary:2500,
+    postedDate:new Date(),
+    status:"open",
+    applicationDeadline:new Date(),
+    requirements:["Be a human", "Know what to do"]
+  }
 ];
+
+const users = [
+  {
+      name:"Bob Bobbers",
+      username:"Bobthebobber",
+      password:"Password123!",
+      phone_number:"12345",
+      gender:"male",
+      date_of_birth:new Date(),
+      membership_status:"member",
+      address:"Street 12",
+      profile_picture:"picture.jpg"
+  },
+  {
+      name:"Mike Mikers",
+      username:"Miketheman",
+      password:"Letmepass123!",
+      phone_number:"5555",
+      gender:"male",
+      date_of_birth:new Date(),
+      membership_status:"member",
+      address:"Old street 50",
+      profile_picture:"picture2.jpg"
+  }
+]
+
+let token = null;
+let user = null;
 
 describe("Job Controller", () => {
   beforeEach(async () => {
-    await Job.deleteMany({});
-    await Job.insertMany(jobs);
+    const res = await api.post("api/users/signup").send(users[0]);
+    user = res.body;
+    token = res.body.token;
+
+    await api.post("api/jobs").set("Authorization", `bearer ${token}`).body(jobs[0]);
+    await api.post("api/jobs").set("Authorization", `bearer ${token}`).body(jobs[1]);
   });
 
   afterAll(() => {
@@ -41,6 +88,7 @@ describe("Job Controller", () => {
   it("should return all jobs as JSON when GET /api/jobs is called", async () => {
     const response = await api
       .get("/api/jobs")
+      .set("Authorization", `bearer ${token}`)
       .expect(200)
       .expect("Content-Type", /application\/json/);
 
@@ -49,27 +97,35 @@ describe("Job Controller", () => {
 
   // Test POST /api/jobs
   it("should create a new job when POST /api/jobs is called", async () => {
-    const newJob = {
-      title: "Mid-Level DevOps Engineer",
-      type: "Full-Time",
-      description: "We are looking for a DevOps Engineer to join our team.",
-      company: {
-        name: "Cloud Solutions",
-        contactEmail: "jobs@cloudsolutions.com",
-        contactPhone: "555-555-6789"
-      }
-    };
+    const newjob = {
+    title:"Another job",
+    type:"Company job",
+    description:"Available for new graduates",
+    company: {
+      name:"Company company",
+      contactEmail:"testing@email.com",
+      contactPhone:"12345",
+      website:"www.testsite.com"
+    },
+    location:"Street 11",
+    salary:2500,
+    postedDate:new Date(),
+    status:"open",
+    applicationDeadline:new Date(),
+    requirements:["Be a human", "Know what to do"]
+  }
 
     await api
       .post("/api/jobs")
-      .send(newJob)
+      .set("Authorization", `bearer ${token}`)
+      .send(newjob)
       .expect(201)
       .expect("Content-Type", /application\/json/);
-
+    
     const jobsAfterPost = await Job.find({});
     expect(jobsAfterPost).toHaveLength(jobs.length + 1);
     const jobTitles = jobsAfterPost.map((job) => job.title);
-    expect(jobTitles).toContain(newJob.title);
+    expect(jobTitles).toContain(newjob.title);
   });
 
   // Test GET /api/jobs/:id
@@ -77,6 +133,7 @@ describe("Job Controller", () => {
     const job = await Job.findOne();
     await api
       .get(`/api/jobs/${job._id}`)
+      .set("Authorization", `bearer ${token}`)
       .expect(200)
       .expect("Content-Type", /application\/json/);
   });
@@ -96,6 +153,7 @@ describe("Job Controller", () => {
 
     await api
       .put(`/api/jobs/${job._id}`)
+      .set("Authorization", `bearer ${token}`)
       .send(updatedJob)
       .expect(200)
       .expect("Content-Type", /application\/json/);
@@ -124,3 +182,4 @@ describe("Job Controller", () => {
     await api.delete(`/api/jobs/${invalidId}`).expect(400);
   });
 });
+
