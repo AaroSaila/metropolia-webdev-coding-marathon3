@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 
 import AuthContextProvider from "./context/AuthContextProvider";
-import { AuthContext } from "./context/AuthContext"
+import { AuthContext } from "./context/AuthContextProvider"; // Correct import
 
 // pages & components
 import Navbar from "./components/Navbar";
@@ -24,10 +24,10 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/jobs/:id" element={<JobPage />} />
-              <Route path="/add-job" element={<PrivateRoute component={AddJobPage} />} />
-              <Route path="/edit-job/:id" element={<PrivateRoute component={EditJobPage} />} />
-              <Route path="/signup" element={<PublicRoute component={Signup} />} />
-              <Route path="/login" element={<PublicRoute component={Login} />} />
+              <Route path="/add-job" element={<PrivateRoute element={<AddJobPage />} />} />
+              <Route path="/edit-job/:id" element={<PrivateRoute element={<EditJobPage />} />} />
+              <Route path="/signup" element={<PublicRoute element={<Signup />} />} />
+              <Route path="/login" element={<PublicRoute element={<Login />} />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>
@@ -37,14 +37,14 @@ const App = () => {
   );
 };
 
-const PrivateRoute = ({ component: Component }) => {
+const PrivateRoute = ({ element }) => {
   const { isAuthenticated } = useContext(AuthContext);
-  return isAuthenticated ? <Component /> : <Navigate to="/login" />;
+  return isAuthenticated ? element : <Navigate to="/login" />;
 };
 
-const PublicRoute = ({ component: Component }) => {
+const PublicRoute = ({ element }) => {
   const { isAuthenticated } = useContext(AuthContext);
-  return !isAuthenticated ? <Component /> : <Navigate to="/" />;
+  return !isAuthenticated ? element : <Navigate to="/" />;
 };
 
 export default App;

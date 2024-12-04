@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContextProvider"; // Correct import
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
@@ -10,6 +10,14 @@ const Navbar = () => {
     logout();
     navigate("/");
   };
+
+  const user = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user")) || {};
+    } catch {
+      return {};
+    }
+  })();
 
   return (
     <nav className="navbar">
@@ -21,7 +29,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <>
               <Link to="/add-job">Add Job</Link>
-              <span><strong>{JSON.parse(localStorage.getItem("user")).username}</strong></span>
+              {user.username && <span><strong>{user.username}</strong></span>}
               <button onClick={handleClick}>Log Out</button>
             </>
           ) : (

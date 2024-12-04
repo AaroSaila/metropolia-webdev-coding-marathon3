@@ -2,7 +2,7 @@ import useField from "../hooks/useField";
 import useSignup from "../hooks/useSignup";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContextProvider";
 
 const Signup = () => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -23,7 +23,7 @@ const Signup = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    await signup({
+    const success = await signup({
       username: username.value,
       password: password.value,
       name: name.value,
@@ -35,7 +35,7 @@ const Signup = () => {
       profile_picture: profilePictureUrl.value,
     });
 
-    if (!error) {
+    if (success) {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setIsAuthenticated(true);
@@ -43,6 +43,7 @@ const Signup = () => {
       }
     }
   };
+
 
   return (
     <div className="create">
@@ -80,7 +81,7 @@ const Signup = () => {
         <input {...profilePictureUrl} />
         <button>Sign up</button>
       </form>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

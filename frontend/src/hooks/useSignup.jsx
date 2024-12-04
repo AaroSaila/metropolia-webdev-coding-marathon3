@@ -2,11 +2,12 @@ import { useState } from "react";
 
 export default function useSignup(url) {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const signup = async (object) => {
     setIsLoading(true);
     setError(null);
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -17,17 +18,29 @@ export default function useSignup(url) {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "An error occurred");
+        // Capture error message from server or provide a fallback
+        setError(data.message || "An error occurred during signup");
         setIsLoading(false);
-        return;
+        return false; // Explicitly return failure
       }
 
-      localStorage.setItem("user", JSON.stringify({ token: data.token, username: data.username }));
+      // Store user data in localStorage
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: data.token,
+          username: data.username,
+          name: data.name, // Include other fields if needed
+        })
+      );
+
       setIsLoading(false);
+      return true; // Explicitly return success
     } catch (err) {
       console.error("An error occurred:", err);
-      setError("An error occurred. Please try again.");
+      setError("A network error occurred. Please try again.");
       setIsLoading(false);
+      return false; // Explicitly return failure
     }
   };
 

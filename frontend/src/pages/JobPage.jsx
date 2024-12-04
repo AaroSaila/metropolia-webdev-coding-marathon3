@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContextProvider";
 
 const JobPage = () => {
   const { isAuthenticated } = useContext(AuthContext)
@@ -84,10 +84,10 @@ const JobPage = () => {
           </div>
 
           {isAuthenticated && <div className="buttonHolder">
-            <button onClick={() => onDeleteClick(job._id)}>Delete</button>
             <button onClick={() => navigate(`/edit-job/${job._id}`)}>
               Edit
             </button>
+            <button onClick={() => onDeleteClick(job._id)}>Delete</button>
           </div>}
         </>
       )}

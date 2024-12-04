@@ -2,11 +2,10 @@ import useField from "../hooks/useField";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContextProvider"; // Correct import
 
 const Login = () => {
-  const { setIsAuthenticated } = useContext(AuthContext)
-
+  const { setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const username = useField("text");
   const password = useField("password");
@@ -15,25 +14,25 @@ const Login = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await login({ username: username.value, password: password.value });
-    if (!error) {
-      console.log("success");
+    const user = await login({ username: username.value, password: password.value });
+
+    if (user) {
       setIsAuthenticated(true);
       navigate("/");
     }
   };
 
-
   return (
     <div className="create">
       <h2>Login</h2>
       <form onSubmit={handleFormSubmit}>
-      <label>Username:</label>
+        <label>Username:</label>
         <input {...username} />
         <label>Password:</label>
         <input {...password} />
-        <button>Log in</button>
+        <button type="submit">Log in</button>
       </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
