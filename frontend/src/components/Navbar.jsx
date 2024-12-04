@@ -3,13 +3,13 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext)
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    logout()
-    navigate("/")
-  }
+    logout();
+    navigate("/");
+  };
 
   return (
     <nav className="navbar">
@@ -18,13 +18,18 @@ const Navbar = () => {
       </Link>
       <div className="links">
         <div>
-          {isAuthenticated ?
-            <><Link to="/add-job">Add Job</Link>
-              <button onClick={handleClick}>Log Out</button></> :
-            <><Link to="/login">Log In</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/add-job">Add Job</Link>
+              <span><strong>{JSON.parse(localStorage.getItem("user")).username}</strong></span>
+              <button onClick={handleClick}>Log Out</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Log In</Link>
               <Link to="/signup">Sign Up</Link>
             </>
-          }
+          )}
         </div>
       </div>
     </nav>

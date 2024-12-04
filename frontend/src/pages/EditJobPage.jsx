@@ -67,7 +67,7 @@ const EditJobPage = () => {
         setLocation(data.location);
         setSalary(data.salary);
         setStatus(data.status);
-        setApplicationDeadline(data.applicationDeadline);
+        setApplicationDeadline(data.applicationDeadline ? data.applicationDeadline.split("T")[0] : new Date().toISOString().split("T")[0]); // Set default date
         setRequirements(data.requirements.join(", "));
       } catch (error) {
         console.error("Failed to fetch job:", error);

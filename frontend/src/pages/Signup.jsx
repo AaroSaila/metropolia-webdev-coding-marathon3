@@ -2,7 +2,6 @@ import useField from "../hooks/useField";
 import useSignup from "../hooks/useSignup";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-
 import { AuthContext } from "../context/AuthContext";
 
 const Signup = () => {
@@ -16,14 +15,14 @@ const Signup = () => {
   const gender = useField("text", true);
   const dateOfBirth = useField("date", true);
   const membershipStatus = useField("text", true);
-
   const address = useField("text", true);
-  const profilePicture = useField("file", false, "image/*");
+  const profilePictureUrl = useField("text", false);
 
   const { signup, error } = useSignup("/api/users/signup");
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
     await signup({
       username: username.value,
       password: password.value,
@@ -33,8 +32,9 @@ const Signup = () => {
       date_of_birth: dateOfBirth.value,
       membership_status: membershipStatus.value,
       address: address.value,
-      profilePicture: profilePicture.value,
+      profile_picture: profilePictureUrl.value,
     });
+
     if (!error) {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
@@ -59,7 +59,8 @@ const Signup = () => {
         <label>Phone Number:</label>
         <input {...phoneNumber} />
         <label>Gender:</label>
-        <select {...gender}>
+        <select value={gender.value} onChange={gender.onChange} required>
+          <option value="">Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Others">Others</option>
@@ -67,17 +68,19 @@ const Signup = () => {
         <label>Date of Birth:</label>
         <input {...dateOfBirth} />
         <label>Membership Status:</label>
-        <select {...membershipStatus}>
+        <select value={membershipStatus.value} onChange={membershipStatus.onChange} required>
+          <option value="">Select Status</option>
           <option value="member">Member</option>
           <option value="non-member">Non-Member</option>
         </select>
 
         <label>Address:</label>
         <input {...address} />
-        <label>Profile Picture:</label>
-        <input {...profilePicture} />
+        <label>Profile Picture URL:</label>
+        <input {...profilePictureUrl} />
         <button>Sign up</button>
       </form>
+      {error && <p>{error}</p>}
     </div>
   );
 };

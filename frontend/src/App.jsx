@@ -15,26 +15,36 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
 const App = () => {
-  const { isAuthenticated } = useContext(AuthContext)
-
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Navbar />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/jobs/:id" element={<JobPage />} />
-            {isAuthenticated && <Route path="/add-job" element={<AddJobPage />} />}
-            {isAuthenticated && <Route path="/edit-job/:id" element={<EditJobPage />} />}
-            {!isAuthenticated && <Route path="/signup" element={<Signup />} />}
-            {!isAuthenticated && <Route path="/login" element={<Login />} />}
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </div >
+    <AuthContextProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Navbar />
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/jobs/:id" element={<JobPage />} />
+              <Route path="/add-job" element={<PrivateRoute component={AddJobPage} />} />
+              <Route path="/edit-job/:id" element={<PrivateRoute component={EditJobPage} />} />
+              <Route path="/signup" element={<PublicRoute component={Signup} />} />
+              <Route path="/login" element={<PublicRoute component={Login} />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </div>
+    </AuthContextProvider>
   );
+};
+
+const PrivateRoute = ({ component: Component }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+  return isAuthenticated ? <Component /> : <Navigate to="/login" />;
+};
+
+const PublicRoute = ({ component: Component }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+  return !isAuthenticated ? <Component /> : <Navigate to="/" />;
 };
 
 export default App;

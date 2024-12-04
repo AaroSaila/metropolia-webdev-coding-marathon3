@@ -12,7 +12,7 @@ const AddJobPage = () => {
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [status, setStatus] = useState("open");
-  const [applicationDeadline, setApplicationDeadline] = useState("");
+  const [applicationDeadline, setApplicationDeadline] = useState(new Date().toISOString().split("T")[0]);
   const [requirements, setRequirements] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -130,24 +130,13 @@ const AddJobPage = () => {
           onChange={(e) => setLocation(e.target.value)}
         ></input>
         <label>Salary:</label>
-        <select
-          name="salary"
+        <input
+          type="number"
           required
           value={salary}
+          placeholder="Anually"
           onChange={(e) => setSalary(e.target.value)}
-        >
-          <option value="Under $50K">Under $50K</option>
-          <option value="$50K - 60K">$50K - $60K</option>
-          <option value="$60K - 70K">$60K - $70K</option>
-          <option value="$70K - 80K">$70K - $80K</option>
-          <option value="$80K - 90K">$80K - $90K</option>
-          <option value="$90K - 100K">$90K - $100K</option>
-          <option value="$100K - 125K">$100K - $125K</option>
-          <option value="$125K - 150K">$125K - $150K</option>
-          <option value="$150K - 175K">$150K - $175K</option>
-          <option value="$175K - 200K">$175K - $200K</option>
-          <option value="Over $200K">Over $200K</option>
-        </select>
+        />
         <label>Status:</label>
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="open">Open</option>

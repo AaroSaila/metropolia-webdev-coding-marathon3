@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", getAllJobs);
 router.post("/", requireAuth, createJob);
-router.get("/:jobId", requireAuth, getJobById);
+router.get("/:jobId", getJobById);
 router.put("/:jobId", requireAuth, updateJob);
 router.delete("/:jobId", requireAuth, deleteJob);
 

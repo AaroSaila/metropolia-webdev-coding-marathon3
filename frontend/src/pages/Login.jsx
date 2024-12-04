@@ -8,14 +8,14 @@ const Login = () => {
   const { setIsAuthenticated } = useContext(AuthContext)
 
   const navigate = useNavigate();
-  const email = useField("email");
+  const username = useField("text");
   const password = useField("password");
 
   const { login, error } = useLogin("/api/users/login");
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await login({ email: email.value, password: password.value });
+    await login({ username: username.value, password: password.value });
     if (!error) {
       console.log("success");
       setIsAuthenticated(true);
@@ -28,11 +28,11 @@ const Login = () => {
     <div className="create">
       <h2>Login</h2>
       <form onSubmit={handleFormSubmit}>
-      <label>Email address:</label>
-        <input {...email} />
+      <label>Username:</label>
+        <input {...username} />
         <label>Password:</label>
         <input {...password} />
-        <button>Sign up</button>
+        <button>Log in</button>
       </form>
     </div>
   );

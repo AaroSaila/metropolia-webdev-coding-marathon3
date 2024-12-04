@@ -19,7 +19,7 @@ export default function useLogin(url) {
           return error;
         }
     
-        // localStorage.setItem("token", user.token);
+
         localStorage.setItem("user", JSON.stringify(user));
         setIsLoading(false);
       };

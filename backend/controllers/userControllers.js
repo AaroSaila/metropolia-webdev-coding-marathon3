@@ -20,7 +20,7 @@ export const signupUser = async (req, res) => {
         const newUser = await User.signup({ ...req.body });
         console.log("newuser:", newUser);
         const token = jwt.sign(JSON.stringify(newUser), process.env.SECRET);
-        res.status(201).json({ msg: "User created", token });
+        res.status(201).json({ msg: "User created", token, username: newUser.username});
     } catch (error) {
         console.error(error);
         res
@@ -31,7 +31,7 @@ export const signupUser = async (req, res) => {
 
 // POST /users/login/
 export const loginUser = async (req, res) => {
-    const { username, password } = req.query;
+    const { username, password } = req.body;
 
     const user = await User.findOne({username});
 
@@ -47,7 +47,7 @@ export const loginUser = async (req, res) => {
 
     const token = jwt.sign(JSON.stringify(user), process.env.SECRET);
 
-    return res.status(200).json({ msg: "User logged in", token });
+    return res.status(200).json({ msg: "User logged in", token, username: user.username });
 }
 
 // GET /users/:userId
