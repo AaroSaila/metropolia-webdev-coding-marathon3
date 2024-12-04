@@ -16,7 +16,7 @@ const USERS = [
 
 
 async function seedUser(user) {
-    const url = BASE_URL + "/";
+    const url = BASE_URL + "/signup";
     const res = await fetch(url, {
         method: "POST",
         headers: {

@@ -1,8 +1,10 @@
 import User from "../models/userModel.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 //GET / users;
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (_, res) => {
     try {
         const users = await User.find({}).sort({ createdAt: -1 });
         res.status(200).json(users);
@@ -12,11 +14,13 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
-// POST /users
-export const createUser = async (req, res) => {
+// POST /users/signup
+export const signupUser = async (req, res) => {
     try {
-        const newUser = await User.create({ ...req.body });
-        res.status(201).json(newUser);
+        const newUser = await User.signup({ ...req.body });
+        console.log("newuser:", newUser);
+        const token = jwt.sign(JSON.stringify(newUser), process.env.SECRET);
+        res.status(201).json({ msg: "User created", token });
     } catch (error) {
         console.error(error);
         res
@@ -24,6 +28,27 @@ export const createUser = async (req, res) => {
             .json({ message: "Failed to create user", error: error.message });
     }
 };
+
+// POST /users/login/
+export const loginUser = async (req, res) => {
+    const { username, password } = req.query;
+
+    const user = await User.findOne({username});
+
+    if (user === null) {
+        return res.status(400).json({error: `No user with username ${username}`});
+    }
+
+    const passwordIsCorrect = await bcrypt.compare(password, user.password);
+
+    if (!passwordIsCorrect) {
+        return res.status(401).json({error: "Incorrect password"});
+    }
+
+    const token = jwt.sign(JSON.stringify(user), process.env.SECRET);
+
+    return res.status(200).json({ msg: "User logged in", token });
+}
 
 // GET /users/:userId
 export const getUserById = async (req, res) => {
@@ -46,9 +71,9 @@ export const getUserById = async (req, res) => {
     }
 };
 
-// PUT /users/:userId
+// PUT /users
 export const updateUser = async (req, res) => {
-    const { userId } = req.params;
+    const userId = await req.user["_id"];
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: "Invalid user ID" });
@@ -61,7 +86,7 @@ export const updateUser = async (req, res) => {
             { new: true }
         );
         if (updatedUser) {
-            res.status(200).json(updatedUser);
+            res.status(200).json({msg: "User updated"});
         } else {
             res.status(404).json({ message: "User not found" });
         }
@@ -71,9 +96,9 @@ export const updateUser = async (req, res) => {
     }
 };
 
-// DELETE /users/:userId
+// DELETE /users/
 export const deleteUser = async (req, res) => {
-    const { userId } = req.params;
+    const userId = req.user._id;
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: "Invalid user ID" });
