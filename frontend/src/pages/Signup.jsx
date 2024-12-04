@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Signup = () => {
-  const { setIsAuthenticated } = useContext(AuthContext)
+  const { setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const name = useField("text", true);
@@ -36,10 +36,10 @@ const Signup = () => {
       profilePicture: profilePicture.value,
     });
     if (!error) {
-      const user = JSON.parse(localStorage.getItem("user"))
+      const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
-        setIsAuthenticated(true)
-        navigate("/")
+        setIsAuthenticated(true);
+        navigate("/");
       }
     }
   };
@@ -59,11 +59,18 @@ const Signup = () => {
         <label>Phone Number:</label>
         <input {...phoneNumber} />
         <label>Gender:</label>
-        <input {...gender} />
+        <select {...gender}>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Others">Others</option>
+        </select>
         <label>Date of Birth:</label>
         <input {...dateOfBirth} />
         <label>Membership Status:</label>
-        <input {...membershipStatus} />
+        <select {...membershipStatus}>
+          <option value="member">Member</option>
+          <option value="non-member">Non-Member</option>
+        </select>
 
         <label>Address:</label>
         <input {...address} />
