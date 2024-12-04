@@ -1,8 +1,8 @@
-const Job = require("../models/jobModel");
-const mongoose = require("mongoose");
+import Job from "../models/jobModel.js";
+import mongoose from "mongoose";
 
 //GET / jobs;
-const getAllJobs = async (req, res) => {
+export const getAllJobs = async (req, res) => {
   try {
     const jobs = await Job.find({}).sort({ createdAt: -1 });
     res.status(200).json(jobs);
@@ -12,7 +12,7 @@ const getAllJobs = async (req, res) => {
 };
 
 // POST /jobs
-const createJob = async (req, res) => {
+export const createJob = async (req, res) => {
   try {
     const newJob = await Job.create({ ...req.body });
     res.status(201).json(newJob);
@@ -24,7 +24,7 @@ const createJob = async (req, res) => {
 };
 
 // GET /jobs/:jobId
-const getJobById = async (req, res) => {
+export const getJobById = async (req, res) => {
   const { jobId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
@@ -44,7 +44,7 @@ const getJobById = async (req, res) => {
 };
 
 // PUT /jobs/:jobId
-const updateJob = async (req, res) => {
+export const updateJob = async (req, res) => {
   const { jobId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
@@ -68,7 +68,7 @@ const updateJob = async (req, res) => {
 };
 
 // DELETE /jobs/:jobId
-const deleteJob = async (req, res) => {
+export const deleteJob = async (req, res) => {
   const { jobId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
@@ -85,12 +85,4 @@ const deleteJob = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Failed to delete job" });
   }
-};
-
-module.exports = {
-  getAllJobs,
-  getJobById,
-  createJob,
-  updateJob,
-  deleteJob,
 };

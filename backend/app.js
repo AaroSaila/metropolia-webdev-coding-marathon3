@@ -1,10 +1,14 @@
-require('dotenv').config()
-const express = require("express");
+import dotenv from "dotenv";
+import express from "express";
+import jobRouter from "./routes/jobRouter.js";
+import userRouter from "./routes/userRouter.js";
+import { unknownEndpoint, errorHandler } from "./middleware/customMiddleware.js";
+import connectDB from "./config/db.js";
+import cors from "cors";
+
+
+dotenv.config();
 const app = express();
-const jobRouter = require("./routes/jobRouter");
-const { unknownEndpoint,errorHandler } = require("./middleware/customMiddleware");
-const connectDB = require("./config/db");
-const cors = require("cors");
 
 // Middlewares
 app.use(cors())
@@ -14,11 +18,13 @@ connectDB();
 
 // Use the jobRouter for all "/jobs" routes
 app.use("/api/jobs", jobRouter);
+app.use("/api/users", userRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
-module.exports = app;
+
+export default app;
 
 // app.listen(process.env.PORT, () => {
 //   console.log(`Server running on port ${process.env.PORT}`)

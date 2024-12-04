@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 
 const userSchema = new mongoose.Schema({
@@ -12,6 +13,18 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: true },
   profile_picture: { type: String, required: false }
 }, { timestamps: true, versionKey: false });
+
+
+userSchema.statics.signup = async function (user) {
+    if (!user.password) {
+        throw Error("Password is required");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPwd = await bcrypt.hash(user.password, salt);
+
+    return await this.create({...user, password: hashedPwd});
+};
 
 
 export default mongoose.model("User", userSchema);
