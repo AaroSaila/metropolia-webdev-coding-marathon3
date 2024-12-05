@@ -31,7 +31,7 @@ export const signupUser = async (req, res) => {
 
 // POST /users/login/
 export const loginUser = async (req, res) => {
-    const { username, password } = req.query;
+    const { username, password } = req.body;
 
     const user = await User.findOne({username});
 
