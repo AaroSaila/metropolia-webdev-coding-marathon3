@@ -15,17 +15,6 @@ const users = [
         membership_status:"member",
         address:"Street 12",
         profile_picture:"picture.jpg"
-    },
-    {
-        name:"Mike Mikers",
-        username:"Miketheman",
-        password:"Letmepass123!",
-        phone_number:"5555",
-        gender:"male",
-        date_of_birth:new Date(),
-        membership_status:"member",
-        address:"Old street 50",
-        profile_picture:"picture2.jpg"
     }
 ]
 
@@ -57,7 +46,7 @@ describe("User Controller", () => {
     const newuser = {
         name:"Chad chadders",
         username:"Chadlad",
-        password:"Thisisapass222!",
+        password:"Password123!",
         phone_number:"234",
         gender:"male",
         date_of_birth:"12.12.1950",

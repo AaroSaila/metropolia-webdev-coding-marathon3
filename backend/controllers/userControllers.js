@@ -18,7 +18,6 @@ export const getAllUsers = async (_, res) => {
 export const signupUser = async (req, res) => {
     try {
         const newUser = await User.signup({ ...req.body });
-        console.log("newuser:", newUser);
         const token = jwt.sign(JSON.stringify(newUser), process.env.SECRET);
         res.status(201).json({ msg: "User created", token });
     } catch (error) {
