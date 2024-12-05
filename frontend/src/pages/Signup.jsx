@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContextProvider";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 const Signup = () => {
   const { setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const Signup = () => {
   const address = useField("text", true);
   const profilePictureUrl = useField("text", false);
 
-  const { signup, error } = useSignup("/api/users/signup");
+  const { signup, error } = useSignup(`${API_BASE_URL}/api/users/signup`);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();

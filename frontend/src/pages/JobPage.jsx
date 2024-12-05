@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContextProvider";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 const JobPage = () => {
   const { isAuthenticated } = useContext(AuthContext)
 
@@ -17,7 +19,7 @@ const JobPage = () => {
     const token = user.token;
 
     try {
-      const res = await fetch(`/api/jobs/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -35,7 +37,7 @@ const JobPage = () => {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await fetch(`/api/jobs/${id}`);
+        const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`);
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }

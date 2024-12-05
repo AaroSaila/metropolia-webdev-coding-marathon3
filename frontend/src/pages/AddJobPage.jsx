@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 const AddJobPage = () => {
   const [title, setTitle] = useState("");
   const [type, setType] = useState("Full-Time");
@@ -23,7 +25,7 @@ const AddJobPage = () => {
   const addJob = async (newJob) => {
     try {
       console.log("Adding job:", newJob);
-      const res = await fetch("/api/jobs", {
+      const res = await fetch(`${API_BASE_URL}/api/jobs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

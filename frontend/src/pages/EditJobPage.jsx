@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 const EditJobPage = () => {
   const [job, setJob] = useState(null); // Initialize job state
   const [loading, setLoading] = useState(true); // Loading state
@@ -29,7 +31,7 @@ const EditJobPage = () => {
   const updateJob = async (job) => {
     try {
       console.log("Updating job:", job);
-      const res = await fetch(`/api/jobs/${job.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${job.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +51,7 @@ const EditJobPage = () => {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await fetch(`/api/jobs/${id}`);
+        const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`);
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }

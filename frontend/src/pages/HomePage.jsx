@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import JobListings from "../components/JobListings";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 const Home = () => {
   const [jobs, setJobs] = useState(null);
   const [isPending, setIsPending] = useState(true);
@@ -9,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch("api/jobs");
+        const res = await fetch(`${API_BASE_URL}/api/jobs`);
         if (!res.ok) {
           throw new Error("could not fetch the data for that resource");
         }
