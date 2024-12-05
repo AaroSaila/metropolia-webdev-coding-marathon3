@@ -4,7 +4,8 @@
 - Link to the backend:   
   - [Code for API V1 (without authentication)](https://github.com/AaroSaila/metropolia-webdev-coding-marathon3/tree/api-v1/backend)  
   - [Code for API V2 (with authentication)](https://github.com/AaroSaila/metropolia-webdev-coding-marathon3/tree/api-v2/backend)    
-  - [Backend Tests for both APIs](https://github.com/AaroSaila/metropolia-webdev-coding-marathon3/tree/api-v1-test/backend/tests) 
+  - [Backend Tests for API V1](https://github.com/AaroSaila/metropolia-webdev-coding-marathon3/tree/api-v1-test/backend/tests)
+  - [Backend Tests for API v2](https://github.com/AaroSaila/metropolia-webdev-coding-marathon3/tree/api-v2-test/backend/tests)  
 - Link to the frontend:    
   - [Code for the final frontend](https://github.com/AaroSaila/metropolia-webdev-coding-marathon3/tree/frontend-auth-backend-v2/frontend)    
 - URLs for the deployed APIs and Frontend:
